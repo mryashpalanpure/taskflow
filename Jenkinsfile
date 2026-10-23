@@ -1,9 +1,9 @@
 pipeline{
     agent any
     stages{
-        stage('Cloning the code from the github'){
+        stage('Checkout'){
             steps{
-                git url:"https://github.com/mryashpalanpure/taskflow.git" , branch:"main"
+               checkout scm
             }
         }
 
