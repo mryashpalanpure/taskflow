@@ -1,4 +1,5 @@
 pipeline{
+    agent any
     stages{
         stage('Cloning the code from the github'){
             steps{
