@@ -28,6 +28,9 @@ services:
     container_name: taskmongo
     ports:
       - "27017:27017"
-    networks:
-      - taskflow
-  
+networks:
+  taskflow:
+    driver: bridge
+
+volumes:
+  mongo-data:
