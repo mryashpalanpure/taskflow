@@ -22,6 +22,17 @@ pipeline{
             }
         }
 
+        stage('Testing'){
+            steps{
+                dir('server'){
+                    echo "This is a testing stage"
+                    sh 'npm install'
+                    sh 'npm test'
+                    echo "Your Code is successfully tested now push it to the production"
+                }
+            }
+        }
+
         stage('Building the code'){
             steps{
                     sh 'docker compose up -d --build'
