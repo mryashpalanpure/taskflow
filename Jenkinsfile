@@ -49,8 +49,8 @@ pipeline {
                     passwordVariable: 'dockerhubpass'
                 )]) {
                     sh 'echo "$dockerhubpass" | docker login -u "$dockerhubuser" --password-stdin'
-                    sh 'docker push $dockerhubuser/taskfrontend:latest'
-                    sh 'docker push $dockerhubuser/taskbackend:latest'
+                    sh 'docker push $dockerhubuser/taskflow2-frontend:latest'
+                    sh 'docker push $dockerhubuser/taskflow2-backend:latest'
                 }
             }
         }
