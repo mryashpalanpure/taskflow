@@ -9,17 +9,20 @@ pipeline{
 
         stage('Add .env file to the jenkins'){
             steps{
-                sh '''
-                    rm -f server/.env client/.env
-                    cp "$SERVER_ENV" server/.env
-                    cp "$CLIENT_ENV" client/.env
-                    chmod 644 server/.env client/.env
-'''
+               
                 withCredentials([
                     file(credentialsId: 'backend ki .env' , variable: 'SERVER_ENV'),
                     file(credentialsId: 'frontend ki .env' , variable: 'CLIENT_ENV')
                 ])
                 {
+
+                    sh '''
+                    rm -f server/.env client/.env
+                    cp "$SERVER_ENV" server/.env
+                    cp "$CLIENT_ENV" client/.env
+                    chmod 644 server/.env client/.env
+                    '''
+
                     sh '''
                     cp "$SERVER_ENV" server/.env
                     cp "$CLIENT_ENV" client/.env
