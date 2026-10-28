@@ -38,11 +38,11 @@ pipeline{
                     sh 'docker compose up -d'
                 }
             }
-        }
 
         stage('Pushed the image to the docker hub'){
             steps{
-                withCredentials([usernamePassword(credentialsId: 'HubCredential', passwordVariable: 'dockerhubpass', usernameVariable: 'dockerhubuser')]) {
+                withCredentials([usernamePassword(credentialsId: 'HubCredential', passwordVariable: 'dockerhubpass', usernameVariable: 'dockerhubuser')]) 
+                {
                 sh "docker login -u ${dockerhubuser} -p ${dockerhubpass}"
                 }
 
@@ -52,3 +52,4 @@ pipeline{
             }
         }
     }
+}
