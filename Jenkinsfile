@@ -48,10 +48,10 @@ pipeline{
                 withCredentials([usernamePassword(credentialsId: 'HubCredential', passwordVariable: 'dockerhubpass', usernameVariable: 'dockerhubuser')]) 
                 {
                 sh "docker login -u ${dockerhubuser} -p ${dockerhubpass}"
-                sh "docker push ${dockerhubuser}/taskfrontend"
-                sh "docker push ${dockerhubuser}/taskbackend"
+                sh "docker push  ${dockerhubuser}/taskflow2-frontend"
+                sh "docker push ${dockerhubuser}/taskflow2-backend"
                 sh "docker push ${dockerhubuser}/taskmongo"
-                }
+                }   
             }
         }
     }
