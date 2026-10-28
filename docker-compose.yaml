@@ -3,6 +3,7 @@ services:
     build:  
       context: ./client
       dockerfile: Dockerfile
+    image : palanpure/taskflowfrontend:latest
     container_name: taskfrontend
     ports: 
        - "5173:5173"
@@ -15,6 +16,7 @@ services:
     build:  
       context: ./server
       dockerfile: Dockerfile
+    image : palanpure/taskflowbackend:latest
     container_name: taskbackend
     ports: 
        - "5000:5000"
