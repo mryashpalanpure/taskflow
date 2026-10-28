@@ -1,21 +1,19 @@
-pipeline{
+pipeline {
     agent any
-    stages{
-        stage('Checkout'){
-            steps{
-               checkout scm
+    stages {
+
+        stage('Checkout') {
+            steps {
+                checkout scm
             }
         }
 
-        stage('Add .env file to the jenkins'){
-            steps{
-               
+        stage('Add .env file to the jenkins') {
+            steps {
                 withCredentials([
-                    file(credentialsId: 'backend ki .env' , variable: 'SERVER_ENV'),
-                    file(credentialsId: 'frontend ki .env' , variable: 'CLIENT_ENV')
-                ])
-                {
-
+                    file(credentialsId: 'backend ki .env', variable: 'SERVER_ENV'),
+                    file(credentialsId: 'frontend ki .env', variable: 'CLIENT_ENV')
+                ]) {
                     sh '''
                     rm -f server/.env client/.env
                     cp "$SERVER_ENV" server/.env
@@ -26,9 +24,9 @@ pipeline{
             }
         }
 
-        stage('Testing'){
-            steps{
-                dir('server'){
+        stage('Testing') {
+            steps {
+                dir('server') {
                     echo "This is a testing stage"
                     sh 'npm install'
                     sh 'npm test'
@@ -37,21 +35,23 @@ pipeline{
             }
         }
 
-        stage('Building the code'){
-            steps{
-                    sh 'docker compose up -d'
-                }
+        stage('Building the code') {
+            steps {
+                sh 'docker compose up -d --build'
             }
+        }
 
-        stage('Pushed the image to the docker hub'){
-            steps{
-                withCredentials([usernamePassword(credentialsId: 'HubCredential', passwordVariable: 'dockerhubpass', usernameVariable: 'dockerhubuser')]) 
-                {
-                sh "docker login -u ${dockerhubuser} -p ${dockerhubpass}"
-                sh "docker push  ${dockerhubuser}:taskflow2-frontend"
-                sh "docker push ${dockerhubuser}:taskflow2-backend"
-                sh "docker push ${dockerhubuser}:taskmongo"
-                }   
+        stage('Pushed the image to the docker hub') {
+            steps {
+                withCredentials([usernamePassword(
+                    credentialsId: 'HubCredential',
+                    usernameVariable: 'dockerhubuser',
+                    passwordVariable: 'dockerhubpass'
+                )]) {
+                    sh 'echo "$dockerhubpass" | docker login -u "$dockerhubuser" --password-stdin'
+                    sh 'docker push $dockerhubuser/taskfrontend:latest'
+                    sh 'docker push $dockerhubuser/taskbackend:latest'
+                }
             }
         }
     }
