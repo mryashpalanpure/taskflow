@@ -26,20 +26,22 @@ pipeline {
 
         stage('Testing') {
             steps {
-                dir('client'){
-                  echo "This is a testing stage"
+                dir('client') {
+                    echo "Testing the client"
                     sh 'npm ci'
                     sh 'npm test'
-                    echo "Your Code is successfully tested now push it to the production"
-                }
-
                 }
                 dir('server') {
-                    echo "This is a testing stage"
+                    echo "Testing the server"
                     sh 'npm ci'
                     sh 'npm test'
-                    echo "Your Code is successfully tested now push it to the production"
                 }
+            }
+        }
+
+        stage('Build images') {
+            steps {
+                sh 'docker compose build'
             }
         }
 
@@ -57,9 +59,10 @@ pipeline {
             }
         }
 
-        stage('Building the code') {
+        stage('Deploy') {
             steps {
-                sh 'docker compose up -d '
+                sh 'docker compose pull'
+                sh 'docker compose up -d'
             }
         }
     }
