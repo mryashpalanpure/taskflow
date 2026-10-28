@@ -35,12 +35,6 @@ pipeline {
             }
         }
 
-        stage('Building the code') {
-            steps {
-                sh 'docker compose up -d --build'
-            }
-        }
-
         stage('Pushed the image to the docker hub') {
             steps {
                 withCredentials([usernamePassword(
@@ -52,6 +46,12 @@ pipeline {
                     sh 'docker push $dockerhubuser/taskflowfrontend:latest'
                     sh 'docker push $dockerhubuser/taskflowbackend:latest'
                 }
+            }
+        }
+
+        stage('Building the code') {
+            steps {
+                sh 'docker compose up -d --build'
             }
         }
     }
