@@ -39,4 +39,16 @@ pipeline{
                 }
             }
         }
+
+        stage('Pushed the image to the docker hub'){
+            steps{
+                withCredentials([usernamePassword(credentialsId: 'HubCredential', passwordVariable: 'dockerhubpass', usernameVariable: 'dockerhubuser')]) {
+                sh "docker login -u ${dockerhubuser} -p ${dockerhubpass}"
+                }
+
+                sh "docker push ${dockerhubuser}/taskfrontend"
+                sh "docker push ${dockerhubuser}/taskbackend"
+                sh "docker push ${dockerhubuser}/taskmongo"
+            }
+        }
     }
