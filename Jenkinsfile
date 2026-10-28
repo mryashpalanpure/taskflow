@@ -39,25 +39,19 @@ pipeline {
             }
         }
 
-        stage('Build images') {
-            steps {
-                sh 'docker compose build'
-            }
-        }
-
-        stage('Pushed the image to the docker hub') {
-            steps {
-                withCredentials([usernamePassword(
-                    credentialsId: 'HubCredential',
-                    usernameVariable: 'dockerhubuser',
-                    passwordVariable: 'dockerhubpass'
-                )]) {
-                    sh 'echo "$dockerhubpass" | docker login -u "$dockerhubuser" --password-stdin'
-                    sh 'docker push $dockerhubuser/taskflowfrontend:latest'
-                    sh 'docker push $dockerhubuser/taskflowbackend:latest'
-                }
-            }
-        }
+        // stage('Pushed the image to the docker hub') {
+        //     steps {
+        //         withCredentials([usernamePassword(
+        //             credentialsId: 'HubCredential',
+        //             usernameVariable: 'dockerhubuser',
+        //             passwordVariable: 'dockerhubpass'
+        //         )]) {
+        //             sh 'echo "$dockerhubpass" | docker login -u "$dockerhubuser" --password-stdin'
+        //             sh 'docker push $dockerhubuser/taskflowfrontend:latest'
+        //             sh 'docker push $dockerhubuser/taskflowbackend:latest'
+        //         }
+        //     }
+        // }
 
         stage('Deploy') {
             steps {
