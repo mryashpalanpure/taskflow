@@ -26,9 +26,17 @@ pipeline {
 
         stage('Testing') {
             steps {
+                dir('client'){
+                  echo "This is a testing stage"
+                    sh 'npm ci'
+                    sh 'npm test'
+                    echo "Your Code is successfully tested now push it to the production"
+                }
+
+                }
                 dir('server') {
                     echo "This is a testing stage"
-                    sh 'npm install'
+                    sh 'npm ci'
                     sh 'npm test'
                     echo "Your Code is successfully tested now push it to the production"
                 }
@@ -51,7 +59,7 @@ pipeline {
 
         stage('Building the code') {
             steps {
-                sh 'docker compose up -d --build'
+                sh 'docker compose up -d '
             }
         }
     }
